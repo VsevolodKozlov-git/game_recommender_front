@@ -1,15 +1,17 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useMutation } from '@tanstack/vue-query'
 import apiClient from '@/axios';
 
 const router = useRouter()
 
-const username = ref('')
-const password = ref('')
+const username = ref(null)
+const password = ref(null)
 const snackbar = ref(false)
 const snackbarMessage = ref('')
+
+const isFieldsEntered = computed(() => username.value && password.value) 
 
 const {isPending, mutate} = useMutation({
   mutationFn: async () => {
@@ -27,7 +29,9 @@ const {isPending, mutate} = useMutation({
     }, 1500)
   },
   onError: (error) => {
-    snackbarMessage.value = 'Error occured. Please try later'
+    const detail =
+    error?.response?.data?.detail || 'Error occurred. Please try later'
+    snackbarMessage.value = detail
     snackbar.value = true
   },
 })
@@ -57,7 +61,7 @@ const {isPending, mutate} = useMutation({
           </v-card-text>
 
           <v-card-actions class="justify-space-between">
-            <v-btn @click="mutate()" color="primary" :disabled="isPending">
+            <v-btn @click="mutate()" color="primary" :disabled="isPending || !isFieldsEntered">
               <v-progress-circular indeterminate v-if="isPending" size="20" />
               <span v-else>Send</span>
             </v-btn>
