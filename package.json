@@ -33,7 +33,8 @@
     "pinia": "^2.1.7",
     "vue": "^3.4.29",
     "vue-router": "^4.3.3",
-    "vuetify": "^3.7.18"
+    "vuetify": "^3.7.18",
+    "qs":"6.14.0"
   },
   "devDependencies": {
     "@mdi/font": "^7.4.47",

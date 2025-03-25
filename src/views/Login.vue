@@ -4,6 +4,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { useMutation } from '@tanstack/vue-query'
 import apiClient from '@/axios';
 // import axios from 'axios';
+import qs from 'qs';
 
 const router = useRouter()
 const route = useRoute()
@@ -18,10 +19,14 @@ const isFieldsEntered = computed(() => username.value && password.value)
 const {isPending, mutate} = useMutation({
   mutationFn: async () => {
     // const response = await apiClient.post('/user/get_token', {
-    const response = await apiClient.post('http://localhost:8000/user/token', {
+    const request_data = {
       username: username.value,
       password: password.value,
-    })
+    }
+
+    const response = await apiClient.post('http://localhost:8000/user/token', 
+      qs.stringify(request_data)
+      )
     return response.data
   },
   onSuccess: (data) => {
