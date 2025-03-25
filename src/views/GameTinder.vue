@@ -52,12 +52,12 @@ const { mutate: sendFeedback, isPending: isSendingFeedback } = useMutation({
   mutationFn: async () => {
     const feedback = {
       id_game: currentGame.value.id_game,
-      is_played: isPlayed.value,
-      like_to_play: !isPlayed.value ? likeToPlay.value : null,
+      has_played: isPlayed.value,
+      want_to_play: !isPlayed.value ? likeToPlay.value : null,
       rating: isPlayed.value ? rating.value : null,
     }
 
-    await apiClient.post('/recommender/user_response', { user_response: [feedback] })
+    await apiClient.post('/reaction/', feedback)
 
     isPlayed.value = null
     likeToPlay.value = null
